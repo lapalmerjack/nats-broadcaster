@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broadcaster
+  template:
+    metadata:
+      labels:
+        app: broadcaster
+    spec:
+      containers:
+        - name: broadcaster
+          image: BROADCASTER/IMAGE
+          ports:
+            - containerPort: 8082
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 60
+            periodSeconds: 180
+          env:
+            - name: NATS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: nats-config
+                  key: nats.url
+            - name: NATS_SUBJECT
+              valueFrom:
+                configMapKeyRef:
+                  name: nats-config
+                  key: nats.subject
+            - name: BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secrets
+                  key: bot-token
+            - name: CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secrets
+                  key: chat-id
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: broadcaster-service
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - port: 4567
+      protocol: TCP
+      targetPort: 8082
