@@ -20,7 +20,7 @@ FROM openjdk:17
 WORKDIR /app
 
 # Copy the JAR file from the builder stage
-COPY --from=builder /app/target/kubernetes-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /app/target/fetcher-0.0.1-SNAPSHOT.jar app.jar
 
 # Set the entrypoint
 ENTRYPOINT ["java", "-jar", "app.jar"]
