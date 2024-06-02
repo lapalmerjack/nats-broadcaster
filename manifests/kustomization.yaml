@@ -4,4 +4,4 @@ resources:
   - broadcaster-deployment.yaml
 images:
   - name: BROADCASTER/IMAGE
-    newName: gcr.io/dwk-gke-416915/broadcast
+    newName: gcr.io/dwk-gke-416915/broadcaster
