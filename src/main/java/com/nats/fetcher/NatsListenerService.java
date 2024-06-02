@@ -44,14 +44,12 @@ public class NatsListenerService {
     @PostConstruct
     public void init() {
         try {
-            Dispatcher dispatcher;
-            try (Connection natsConnection = Nats.connect(natsUrl)) {
-                dispatcher = natsConnection.createDispatcher(msg -> {
-                    String message = new String(msg.getData());
-                    logger.info("Received message: {}", message);
-                    sendMessageToTelegram(message);
-                });
-            }
+            Connection natsConnection = Nats.connect(natsUrl);
+            Dispatcher dispatcher = natsConnection.createDispatcher(msg -> {
+                String message = new String(msg.getData());
+                logger.info("Received message: {}", message);
+                sendMessageToTelegram(message);
+            });
             dispatcher.subscribe(natsSubject);
             logger.info("Subscribed to NATS subject: {}", natsSubject);
         } catch (IOException | InterruptedException e) {
