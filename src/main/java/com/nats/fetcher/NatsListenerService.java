@@ -28,19 +28,6 @@ public class NatsListenerService {
     private String natsSubject;
 
 
-    @Value("${telegram.bot.token}")
-    private String botToken;
-
-    @Value("${telegram.chat.id}")
-    private String chatId;
-
-
-    private final WebClient webClient;
-
-    public NatsListenerService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://api.telegram.org").build();
-    }
-
     @PostConstruct
     public void init() {
         try {
