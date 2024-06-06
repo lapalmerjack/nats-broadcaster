@@ -48,7 +48,7 @@ public class NatsListenerService {
             Dispatcher dispatcher = natsConnection.createDispatcher(msg -> {
                 String message = new String(msg.getData());
                 logger.info("Received message: {}", message);
-                sendMessageToTelegram(message);
+
             });
             dispatcher.subscribe(natsSubject);
             logger.info("Subscribed to NATS subject: {}", natsSubject);
@@ -60,19 +60,5 @@ public class NatsListenerService {
 
 
 
-    private void sendMessageToTelegram(String message) {
-        String url = String.format("/bot%s/sendMessage", botToken);
-        logger.info("Sending message to {}", chatId);
 
-        webClient.post()
-                .uri(uriBuilder -> uriBuilder.path(url)
-                        .queryParam("chat_id", chatId)
-                        .queryParam("text", message)
-                        .build())
-                .retrieve()
-                .bodyToMono(String.class)
-                .doOnError(error -> logger.error("Error sending message to Telegram: {}", error.getMessage()))
-                .subscribe(response -> logger.info("Message sent to Telegram: {}", response));
-
-    }
 }

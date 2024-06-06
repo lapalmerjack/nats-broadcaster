@@ -34,16 +34,7 @@ spec:
                 configMapKeyRef:
                   name: nats-config
                   key: nats.subject
-            - name: BOT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: telegram-secrets
-                  key: bot-token
-            - name: CHAT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: telegram-secrets
-                  key: chat-id
+
 
 ---
 
