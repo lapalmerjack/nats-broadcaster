@@ -9,6 +9,10 @@ spec:
       app: broadcaster
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
+        config.linkerd.io/proxy-wait-before-ready: "true"
+        config.linkerd.io/opaque-ports: "4222"
       labels:
         app: broadcaster
     spec:
